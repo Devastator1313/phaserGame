@@ -7,9 +7,9 @@
     "devTutorial": "esbuild src/mainTutorial.js --serve=3000 --servedir=public --bundle --sourcemap --target=es6 --define:__DEV__=true --outdir=public/",
     "prodTutorial": "esbuild src/mainTutorial.js --serve=3000 --servedir=public --bundle --minify --target=es6 --define:__DEV__=false --outdir=public/",
     "buildTutorial": "esbuild src/mainTutorial.js --bundle --minify --target=es6 --define:__DEV__=false --outdir=public/",
-    "dev": "esbuild src/Main.js --serve=3000 --servedir=public --bundle --sourcemap --target=es6 --define:__DEV__=true --outdir=public/",
-    "prod": "esbuild src/Main.js --serve=3000 --servedir=public --bundle --minify --target=es6 --define:__DEV__=false --outdir=public/",
-    "build": "esbuild src/Main.js --bundle --minify --target=es6 --define:__DEV__=false --outdir=public/",
+    "dev": "esbuild src/main.js --serve=3000 --servedir=public --bundle --sourcemap --target=es6 --define:__DEV__=true --outdir=public/",
+    "prod": "esbuild src/main.js --serve=3000 --servedir=public --bundle --minify --target=es6 --define:__DEV__=false --outdir=public/",
+    "build": "esbuild src/main.js --bundle --minify --target=es6 --define:__DEV__=false --outdir=public/",
     "preinstall": "npx npm-force-resolutions"
   },
   "repository": {

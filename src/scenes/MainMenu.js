@@ -1,7 +1,7 @@
 import Phaser from 'phaser'
 import CONFIG from '../config.js'
 
-import LittleGuy from '../sprites/littleGuy.js'
+// import LittleGuy from '../sprites/littleGuy.js'
 
 class MainMenu extends Phaser.Scene {
   init () {
@@ -26,12 +26,12 @@ class MainMenu extends Phaser.Scene {
       { frameWidth: 16, frameHeight: 16 })
 
     // Pre-load the entire audio sprite
-    this.load.audioSprite('gameAudio', 'assets/audio/gameAudioSprite.json', [
-      'assets/audio/gameAudioSprite.ogg',
-      'assets/audio/gameAudioSprite.m4a',
-      'assets/audio/gameAudioSprite.mp3',
-      'assets/audio/gameAudioSprite.ac3'
-    ])
+    // this.load.audioSprite('gameAudio', 'assets/audio/gameAudioSprite.json', [
+    //   'assets/audio/gameAudioSprite.ogg',
+    //   'assets/audio/gameAudioSprite.m4a',
+    //   'assets/audio/gameAudioSprite.mp3',
+    //   'assets/audio/gameAudioSprite.ac3'
+    // ])
 
     // // DEBUG: Fake loading lots of data
     // for (let i = 0; i < 300; i++) {
@@ -54,20 +54,23 @@ class MainMenu extends Phaser.Scene {
     this.input.keyboard.on('keyup', this.keyReleased, this)
 
     // Load and play background music
-    this.music = this.sound.addAudioSprite('gameAudio')
-    this.music.play('freeVertexStudioTrack1')
+    // this.music = this.sound.addAudioSprite('gameAudio')
+    // this.music.play('freeVertexStudioTrack1')
 
     // Add some sprites
-    this.littleGuy = new LittleGuy(this, 300, 300)
+    // this.littleGuy = new LittleGuy(this, 300, 300)
+    // this.littleGuy.setScale(10, 10)
 
     // Start the animation
-    this.littleGuy.anims.play('littleGuyJumpAnim')
+    // this.littleGuy.anims.play('littleGuyJumpAnim')
+
+    // this.cursors = this.input.keyboard.createCursorKeys()
   }
 
   keyReleased () {
     console.log('Key released')
     this.scene.start('Level1')
-    this.music.stop()
+    // this.music.stop()
   }
 }
 

@@ -39,9 +39,9 @@ class StartScene extends Phaser.Scene {
     ])
 
     // DEBUG: Fake loading lots of data
-    for (let i = 0; i < 300; i++) {
-      this.load.image('sky' + i, 'assets/skies/space3.png')
-    }
+    // for (let i = 0; i < 300; i++) {
+    //   this.load.image('sky' + i, 'assets/skies/space3.png')
+    // }
   }
 
   create () {
@@ -56,11 +56,11 @@ class StartScene extends Phaser.Scene {
     )
 
     // Add a callback when a key is released
-    this.input.keyboard.on('keyup', this.keyReleased, this)
+    // this.input.keyboard.on('keyup', this.keyReleased, this)
 
     // Load and play background music
-    this.music = this.sound.addAudioSprite('gameAudio')
-    this.music.play('freeVertexStudioTrack1')
+    // this.music = this.sound.addAudioSprite('gameAudio')
+    // this.music.play('freeVertexStudioTrack1')
 
     // Add some sprites
     this.witch = new Witch(this, 100, 100)
@@ -70,16 +70,38 @@ class StartScene extends Phaser.Scene {
     this.witch3 = new Witch(this, 250, 100)
     this.slime = new Slime(this, 300, 300)
     this.littleGuy = new LittleGuy(this, 400, 400)
+    this.littleGuy2 = new LittleGuy(this, 800, 400)
     this.littleGuy.setScale(10, 10)
+    this.littleGuy2.setScale(10, 10)
 
     // Start the animation
-    this.witch.anims.play('witchWalkDown')
+    // this.witch.anims.play('witchWalkDown')
     this.witch1.anims.play('witchWalkUp')
     this.witch2.anims.play('witchWalkHoriz')
     this.witch3.anims.play('witchWalkHoriz')
     this.witch3.setFlipX(true)
     this.slime.anims.play('slimeAnim')
     this.littleGuy.anims.play('littleGuyJumpAnim')
+    this.littleGuy2.anims.play('littleGuyWalkAnim')
+
+    this.cursors = this.input.keyboard.createCursorKeys()
+  }
+
+  update () {
+    const direction = { x: 0, y: 0 }
+    if (this.cursors.right.isDown) {
+      direction.x += 1
+    }
+    if (this.cursors.left.isDown) {
+      direction.x -= 1
+    }
+    if (this.cursors.up.isDown) {
+      direction.y -= 1
+    }
+    if (this.cursors.down.isDown) {
+      direction.y += 1
+    }
+    this.witch.move(direction.x, direction.y)
   }
 
   keyReleased () {

@@ -1,13 +1,18 @@
 import Phaser from 'phaser'
 // import CONFIG from '../config.js'
 
-class SlimeSprite extends Phaser.GameObjects.Sprite {
+class SlimeSprite extends Phaser.Physics.Arcade.Sprite {
   constructor (scene, x, y) {
     super(scene, x, y, 'slime', 1)
 
     if (!SlimeSprite.animInitialized) {
       SlimeSprite.setupAnim(scene)
     }
+
+    // Enable physics
+    scene.physics.world.enableBody(this, Phaser.Physics.Arcade.DYNAMIC_BODY)
+
+    // Add self to existing scene
     scene.add.existing(this)
   }
 }
