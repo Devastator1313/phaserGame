@@ -1,10 +1,9 @@
 import Phaser from 'phaser'
-import CONFIG from '../../config.js'
-import Witch from '../../sprites/Tutorial/witch.js'
-import Slime from '../../sprites/Tutorial/slime.js'
-import LittleGuy from '../../sprites/littleGuy.js'
+import CONFIG from '../config.js'
 
-class StartScene extends Phaser.Scene {
+import LittleGuy from '../sprites/littleGuy.js'
+
+class MainMenu extends Phaser.Scene {
   init () {
     this.loadingText = this.add.text(
       CONFIG.DEFAULT_WIDTH / 2,
@@ -18,15 +17,11 @@ class StartScene extends Phaser.Scene {
     // Load the image assets needed for THIS scene
     this.load.image('StartScreen', 'assets/StartScreen.png')
 
-    // Load the image assets needed for 'ExampleScene'
+    // Load the image assets needed for 'Level1'
     this.load.image('sky', 'assets/skies/space3.png')
     this.load.image('logo', 'assets/sprites/phaser3-logo.png')
     this.load.image('red', 'assets/particles/red.png')
 
-    this.load.spritesheet('witch', 'assets/sprites/WitchWalk.png',
-      { frameWidth: 32, frameHeight: 32 })
-    this.load.spritesheet('slime', 'assets/sprites/Slime.png',
-      { frameWidth: 32, frameHeight: 42 })
     this.load.spritesheet('littleGuy', 'assets/sprites/littleGuyJump.png',
       { frameWidth: 16, frameHeight: 16 })
 
@@ -38,10 +33,10 @@ class StartScene extends Phaser.Scene {
       'assets/audio/gameAudioSprite.ac3'
     ])
 
-    // DEBUG: Fake loading lots of data
-    for (let i = 0; i < 300; i++) {
-      this.load.image('sky' + i, 'assets/skies/space3.png')
-    }
+    // // DEBUG: Fake loading lots of data
+    // for (let i = 0; i < 300; i++) {
+    //   this.load.image('sky' + i, 'assets/skies/space3.png')
+    // }
   }
 
   create () {
@@ -63,30 +58,17 @@ class StartScene extends Phaser.Scene {
     this.music.play('freeVertexStudioTrack1')
 
     // Add some sprites
-    this.witch = new Witch(this, 100, 100)
-    this.witch.setScale(3, 3)
-    this.witch1 = new Witch(this, 150, 100)
-    this.witch2 = new Witch(this, 200, 100)
-    this.witch3 = new Witch(this, 250, 100)
-    this.slime = new Slime(this, 300, 300)
-    this.littleGuy = new LittleGuy(this, 400, 400)
-    this.littleGuy.setScale(10, 10)
+    this.littleGuy = new LittleGuy(this, 300, 300)
 
     // Start the animation
-    this.witch.anims.play('witchWalkDown')
-    this.witch1.anims.play('witchWalkUp')
-    this.witch2.anims.play('witchWalkHoriz')
-    this.witch3.anims.play('witchWalkHoriz')
-    this.witch3.setFlipX(true)
-    this.slime.anims.play('slimeAnim')
     this.littleGuy.anims.play('littleGuyJumpAnim')
   }
 
   keyReleased () {
     console.log('Key released')
-    this.scene.start('ExampleScene')
+    this.scene.start('Level1')
     this.music.stop()
   }
 }
 
-export default StartScene
+export default MainMenu

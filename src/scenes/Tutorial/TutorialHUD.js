@@ -2,7 +2,7 @@ import Phaser from 'phaser'
 
 import CONFIG from '../../config.js'
 
-class HUDScene extends Phaser.Scene {
+class TutorialHUDScene extends Phaser.Scene {
   create () {
     this.loadingText = this.add.text(
       CONFIG.DEFAULT_WIDTH - 10,
@@ -13,4 +13,4 @@ class HUDScene extends Phaser.Scene {
   }
 }
 
-export default HUDScene
+export default TutorialHUDScene
