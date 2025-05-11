@@ -4,9 +4,9 @@ import Phaser from 'phaser'
 import CONFIG from './config.js'
 
 // Bringing in our base example scene
-import ExampleScene from './scenes/Example.js'
-import StartScene from './scenes/Start.js'
-import HUDScene from './scenes/HUD.js'
+import ExampleScene from './scenes/Tutorial/Example.js'
+import StartScene from './scenes/Tutorial/Start.js'
+import HUDScene from './scenes/Tutorial/HUD.js'
 
 const config = {
   // Configure Phaser graphics settings

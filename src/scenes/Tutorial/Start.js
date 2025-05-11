@@ -1,5 +1,5 @@
 import Phaser from 'phaser'
-import CONFIG from '../config.js'
+import CONFIG from '../../config.js'
 
 class StartScene extends Phaser.Scene {
   init () {

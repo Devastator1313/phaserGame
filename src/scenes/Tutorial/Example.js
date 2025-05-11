@@ -1,6 +1,6 @@
 import Phaser from 'phaser'
 
-import CONFIG from '../config.js'
+import CONFIG from '../../config.js'
 
 class ExampleScene extends Phaser.Scene {
   preload () {
