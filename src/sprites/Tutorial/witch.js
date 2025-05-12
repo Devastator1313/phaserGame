@@ -11,12 +11,11 @@ class WitchSprite extends Phaser.Physics.Arcade.Sprite {
 
     // Enable physics
     scene.physics.world.enableBody(this, Phaser.Physics.Arcade.DYNAMIC_BODY)
-    this.body.setSize(20, 30)
     this.setImmovable(true)
     this.body.setAllowGravity(false)
     this.body.setCollideWorldBounds(true)
 
-    // Add self to existing scene
+    // Add self to given scene
     scene.add.existing(this)
   }
 
@@ -37,6 +36,7 @@ class WitchSprite extends Phaser.Physics.Arcade.Sprite {
         this.anims.play('witchIdle', true)
       }
     }
+
     this.setVelocity(x * CONFIG.WALK_SPEED, y * CONFIG.WALK_SPEED)
   }
 }
@@ -50,24 +50,28 @@ WitchSprite.setupAnim = (scene) => {
     repeat: -1,
     frames: scene.anims.generateFrameNumbers('witch', { start: 0, end: 7 })
   })
+
   scene.anims.create({
     key: 'witchWalkUp',
     frameRate: 10,
     repeat: -1,
     frames: scene.anims.generateFrameNumbers('witch', { start: 8, end: 15 })
   })
+
   scene.anims.create({
     key: 'witchWalkHoriz',
     frameRate: 10,
     repeat: -1,
     frames: scene.anims.generateFrameNumbers('witch', { start: 16, end: 23 })
   })
+
   scene.anims.create({
     key: 'witchIdle',
     frameRate: 1,
     repeat: -1,
     frames: scene.anims.generateFrameNumbers('witch', { start: 1, end: 2 })
   })
+
   WitchSprite.animInitialized = true
 }
 

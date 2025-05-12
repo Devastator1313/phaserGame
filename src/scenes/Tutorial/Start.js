@@ -1,11 +1,12 @@
 import Phaser from 'phaser'
 import CONFIG from '../../config.js'
-import Witch from '../../sprites/Tutorial/witch.js'
-import Slime from '../../sprites/Tutorial/slime.js'
-import LittleGuy from '../../sprites/littleGuy.js'
+
+import Witch from '../../sprites/Tutorial/Witch.js'
+import Slime from '../../sprites/Tutorial/Slime.js'
 
 class StartScene extends Phaser.Scene {
   init () {
+    // Display a simple loading message
     this.loadingText = this.add.text(
       CONFIG.DEFAULT_WIDTH / 2,
       CONFIG.DEFAULT_HEIGHT / 2,
@@ -23,25 +24,19 @@ class StartScene extends Phaser.Scene {
     this.load.image('logo', 'assets/sprites/phaser3-logo.png')
     this.load.image('red', 'assets/particles/red.png')
 
+    // Load the spritesheet animations
     this.load.spritesheet('witch', 'assets/sprites/WitchWalk.png',
       { frameWidth: 32, frameHeight: 32 })
     this.load.spritesheet('slime', 'assets/sprites/Slime.png',
       { frameWidth: 32, frameHeight: 42 })
-    this.load.spritesheet('littleGuy', 'assets/sprites/littleGuyJump.png',
-      { frameWidth: 16, frameHeight: 16 })
 
-    // Pre-load the entire audio sprite
+    // Pre-load the entire audio-sprite
     this.load.audioSprite('gameAudio', 'assets/audio/gameAudioSprite.json', [
       'assets/audio/gameAudioSprite.ogg',
       'assets/audio/gameAudioSprite.m4a',
       'assets/audio/gameAudioSprite.mp3',
       'assets/audio/gameAudioSprite.ac3'
     ])
-
-    // DEBUG: Fake loading lots of data
-    // for (let i = 0; i < 300; i++) {
-    //   this.load.image('sky' + i, 'assets/skies/space3.png')
-    // }
   }
 
   create () {
@@ -56,38 +51,39 @@ class StartScene extends Phaser.Scene {
     )
 
     // Add a callback when a key is released
-    // this.input.keyboard.on('keyup', this.keyReleased, this)
-
-    // Load and play background music
-    // this.music = this.sound.addAudioSprite('gameAudio')
-    // this.music.play('freeVertexStudioTrack1')
+    this.input.keyboard.on('keyup', this.keyReleased, this)
 
     // Add some sprites
     this.witch = new Witch(this, 100, 100)
-    this.witch.setScale(3, 3)
-    this.witch1 = new Witch(this, 150, 100)
+    this.witch1 = new Witch(this, 200, 200)
     this.witch2 = new Witch(this, 200, 100)
-    this.witch3 = new Witch(this, 250, 100)
-    this.slime = new Slime(this, 300, 300)
-    this.littleGuy = new LittleGuy(this, 400, 400)
-    this.littleGuy2 = new LittleGuy(this, 800, 400)
-    this.littleGuy.setScale(10, 10)
-    this.littleGuy2.setScale(10, 10)
+    this.witch3 = new Witch(this, 100, 200)
 
-    // Start the animation
-    // this.witch.anims.play('witchWalkDown')
+    this.slime1 = new Slime(this, 300, 300)
+    this.slime2 = new Slime(this, 300, 400)
+
+    // Start animation
+    this.witch.anims.play('witchWalkDown')
     this.witch1.anims.play('witchWalkUp')
     this.witch2.anims.play('witchWalkHoriz')
+
     this.witch3.anims.play('witchWalkHoriz')
     this.witch3.setFlipX(true)
-    this.slime.anims.play('slimeAnim')
-    this.littleGuy.anims.play('littleGuyJumpAnim')
-    this.littleGuy2.anims.play('littleGuyWalkAnim')
 
+    this.slime1.anims.play('slimeWalkHoriz')
+    this.slime2.anims.play('slimeWalkHoriz')
+    this.slime2.setFlipX(true)
+
+    // Create some cursor key event listeners
     this.cursors = this.input.keyboard.createCursorKeys()
+
+    // Load and play background music
+    this.music = this.sound.addAudioSprite('gameAudio')
+    this.music.play('BGMTrack1')
   }
 
   update () {
+    // Examine cursor keys to determine direction to walk
     const direction = { x: 0, y: 0 }
     if (this.cursors.right.isDown) {
       direction.x += 1
@@ -101,12 +97,19 @@ class StartScene extends Phaser.Scene {
     if (this.cursors.down.isDown) {
       direction.y += 1
     }
+
+    // Make witch walk
     this.witch.move(direction.x, direction.y)
   }
 
   keyReleased () {
+    // Log the key release
     console.log('Key released')
+
+    // Switch scenes
     this.scene.start('ExampleScene')
+
+    // Stop the music
     this.music.stop()
   }
 }

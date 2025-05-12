@@ -1,10 +1,11 @@
 import Phaser from 'phaser'
 
+// Bring in global config options
 import CONFIG from '../../config.js'
 
 class ExampleScene extends Phaser.Scene {
   preload () {
-    // Loading is done in 'StartScene'
+    // All loading is now done in 'StartScene'
     // - 'sky' is background image
     // - 'red' is our particle
     // - 'logo' is the phaser3 logo
@@ -18,12 +19,13 @@ class ExampleScene extends Phaser.Scene {
     // Add background image
     const sky = this.add.image(CONFIG.DEFAULT_WIDTH / 2, CONFIG.DEFAULT_HEIGHT / 2, 'sky')
     sky.setScale(
-      CONFIG.DEFAULT_WIDTH / sky.width * 1.5,
+      CONFIG.DEFAULT_WIDTH / sky.width,
       CONFIG.DEFAULT_HEIGHT / sky.height
     )
 
     // Create and configure a particle emitter
-    const emitter = this.add.particles(0, 0, 'red', {
+    const particles = this.add.particles('red')
+    const emitter = particles.createEmitter({
       speed: 100,
       scale: { start: 1, end: 0 },
       blendMode: 'ADD'
@@ -53,18 +55,24 @@ class ExampleScene extends Phaser.Scene {
 
     // Load and play background music
     this.music = this.sound.addAudioSprite('gameAudio')
-    this.music.play('freeVertexStudioTrack2')
+    this.music.play('BGMTrack2')
 
     // Create a sound instance for sfx
     this.sfx = this.sound.addAudioSprite('gameAudio')
 
+    // Start the overlaid HUD scene
     this.scene.run('HUDScene')
   }
 
   keyReleased () {
+    // Log the key release
     console.log('Key released')
+
+    // Switch back to first scene
     this.scene.start('StartScene')
     this.scene.stop('HUDScene')
+
+    // Stop music
     this.music.stop()
   }
 }
