@@ -69,7 +69,7 @@ class MainMenu extends Phaser.Scene {
 
   keyReleased () {
     console.log('Key released')
-    this.scene.start('Level1')
+    this.scene.start('Level1-1')
     // this.music.stop()
   }
 }

@@ -21,7 +21,7 @@ class TilemapScene extends Phaser.Scene {
 
   // Parse tile layer from tilemap using given tileset
   createTileLayer (layerName, enableCollision) {
-    const newLayer = this.mapData.createStaticLayer(layerName, this.tilesetData)
+    const newLayer = this.mapData.createLayer(layerName, this.tilesetData)
     if (enableCollision && newLayer) {
       newLayer.setCollisionByExclusion(-1, true)
     }

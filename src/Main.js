@@ -5,6 +5,7 @@ import CONFIG from './config.js'
 
 import MainMenu from './scenes/MainMenu.js'
 import Level1 from './scenes/Level1.js'
+import Level1_1 from './scenes/Level1-1.js'
 import HUD from './scenes/HUD.js'
 
 const config = {
@@ -38,5 +39,6 @@ const game = new Phaser.Game(config)
 // Add and auto-starting ExampleScene
 game.scene.add('MainMenu', MainMenu)
 game.scene.add('Level1', Level1)
+game.scene.add('Level1-1', Level1_1)
 game.scene.add('HUDScene', HUD)
 game.scene.start('MainMenu')

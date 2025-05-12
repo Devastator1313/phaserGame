@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="23" height="18" tilewidth="32" tileheight="32" infinite="0" nextlayerid="5" nextobjectid="19">
+<map version="1.4" tiledversion="1.4.2" orientation="orthogonal" renderorder="right-down" width="23" height="18" tilewidth="32" tileheight="32" infinite="0" nextlayerid="5" nextobjectid="19">
  <tileset firstgid="1" name="Props" tilewidth="275" tileheight="202" tilecount="5" columns="0">
   <grid orientation="orthogonal" width="1" height="1"/>
   <tile id="0">

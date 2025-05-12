@@ -30,7 +30,7 @@ class Level1 extends Phaser.Scene {
       blendMode: 'ADD'
     })
 
-    // Create and animate the logo
+    // Create little guy
     this.littleGuy = new LittleGuy(this, 200, 200)
     this.littleGuy.setScale(10, 10)
     // const logo = this.physics.add.image(400, 100, 'logo')

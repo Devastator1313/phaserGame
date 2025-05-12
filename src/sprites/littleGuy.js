@@ -20,6 +20,7 @@ class LittleGuySprite extends Phaser.Physics.Arcade.Sprite {
     this.body.setAllowGravity(true)
     this.body.setAllowDrag(true)
     this.body.setCollideWorldBounds(true)
+    this.body.setSize(8, 8)
 
     this.on('animationcomplete', () => {
       if (this.anims.currentAnim.key === 'littleGuyJumpAnim') {
@@ -27,8 +28,11 @@ class LittleGuySprite extends Phaser.Physics.Arcade.Sprite {
       }
     })
 
-    // Add self to existing scene
+    // Add self to the given scene
     scene.add.existing(this)
+
+    // Add audio context for sound effects
+    this.sfx = scene.sound.addAudioSprite('gameAudio')
   }
 
   resolveState () {
@@ -61,7 +65,7 @@ class LittleGuySprite extends Phaser.Physics.Arcade.Sprite {
     console.log(this.state)
   }
 
-  move (x) {
+  move (x, y) {
     if (x < 0) {
       this.facing = 'left'
     } else if (x > 0) {
@@ -89,6 +93,24 @@ class LittleGuySprite extends Phaser.Physics.Arcade.Sprite {
       this.jumpAnimPlaying = true
       this.setVelocityY(this.body.velocity.y - CONFIG.JUMP_FORCE)
     }
+  }
+
+  reset (x, y) {
+    // Move player and stop all motion
+    this.setVelocity(0, 0)
+    this.setPosition(x, y)
+    this.anims.play('littleGuyIdle', true)
+    this.sfx.play('deathSound', { volume: 0.1 })
+
+    // Setup blink tween
+    this.setAlpha(0)
+    this.resetTween = this.scene.tweens.add({
+      targets: this,
+      alpha: 1,
+      duration: 100,
+      ease: 'Linear',
+      repeat: 5
+    })
   }
 }
 
