@@ -45,11 +45,6 @@ class LittleGuySprite extends Phaser.Physics.Arcade.Sprite {
       if (this.moving) {
         this.state = 'walking'
         this.anims.play('littleGuyWalkAnim', true)
-        if (this.facing === 'left') {
-          this.setFlipX(true)
-        } else {
-          this.setFlipX(false)
-        }
       } else {
         this.state = 'idle'
         this.anims.play('littleGuyIdleAnim', true)
@@ -61,6 +56,11 @@ class LittleGuySprite extends Phaser.Physics.Arcade.Sprite {
         this.state = 'falling'
         this.anims.play('littleGuyFallAnim', true)
       }
+    }
+    if (this.facing === 'left') {
+      this.setFlipX(true)
+    } else {
+      this.setFlipX(false)
     }
     console.log(this.state)
   }

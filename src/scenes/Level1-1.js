@@ -1,9 +1,19 @@
 import TilemapScene from './Tutorial/TilemapScene.js'
+import CONFIG from '../config.js'
 
 // Bring in player character
 import LittleGuy from '../sprites/littleGuy.js'
 
 class Stage1Scene extends TilemapScene {
+  init () {
+    this.loadingText = this.add.text(
+      CONFIG.DEFAULT_WIDTH / 2,
+      CONFIG.DEFAULT_HEIGHT / 2,
+      'Loading ...', { font: '16pt Arial', color: '#FFFFFF', align: 'center' }
+    )
+    this.loadingText.setOrigin(0.5, 0.5)
+  }
+
   preload () {
     // Load images
     this.load.image('background', 'assets/skies/background.png')
@@ -27,6 +37,8 @@ class Stage1Scene extends TilemapScene {
   }
 
   create () {
+    // Remove loading text
+    this.loadingText.destroy()
     // Adds background image
     const background = this.add.image(0, 0, 'background')
     background.setOrigin(0, 0)
@@ -50,6 +62,14 @@ class Stage1Scene extends TilemapScene {
         spike.body.setOffset(34, 63)
       }
     })
+    this.doors = this.parseObjectLayer('Doors', 'platformTiles', 79, {
+      allowGravity: false,
+      immovable: true,
+      createCallback: (door) => {
+        door.body.setSize(64, 64)
+        door.body.setOffset(32, 32)
+      }
+    })
 
     // Scale our background
     background.setScale(
@@ -66,6 +86,7 @@ class Stage1Scene extends TilemapScene {
     this.physics.add.collider(this.littleGuy, this.platformLayer)
     this.physics.add.collider(this.littleGuy, this.blockLayer)
     this.physics.add.collider(this.littleGuy, this.spikes, this.spikeHit, null, this)
+    this.physics.add.collider(this.littleGuy, this.doors, this.doorHit, null, this)
 
     // Create basic cursors
     this.cursors = this.input.keyboard.createCursorKeys()
@@ -77,6 +98,12 @@ class Stage1Scene extends TilemapScene {
 
   spikeHit () {
     this.littleGuy.reset(50, 300)
+  }
+
+  doorHit () {
+    this.scene.start('WinScreen')
+    // this.scene.stop('HUDScene')
+    this.music.stop()
   }
 
   update () {
