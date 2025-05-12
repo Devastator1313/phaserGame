@@ -9,6 +9,7 @@ class LittleGuySprite extends Phaser.Physics.Arcade.Sprite {
     this.grounded = grounded
     this.moving = moving
     this.jumpAnimPlaying = jumpAnimPlaying
+    this.livesLeft = 3
 
     if (!LittleGuySprite.animInitialized) {
       LittleGuySprite.setupAnim(scene)
@@ -95,7 +96,6 @@ class LittleGuySprite extends Phaser.Physics.Arcade.Sprite {
     // Move player and stop all motion
     this.setVelocity(0, 0)
     this.setPosition(x, y)
-    this.anims.play('littleGuyIdle', true)
     this.sfx.play('deathSound', { volume: 0.1 })
 
     // Setup blink tween
@@ -129,7 +129,7 @@ LittleGuySprite.setupAnim = (scene) => {
     key: 'littleGuyIdleAnim',
     frameRate: 1,
     repeat: -1,
-    frames: scene.anims.generateFrameNumbers('littleGuy', { start: 0, end: 0 })
+    frames: scene.anims.generateFrameNumbers('littleGuy', { frames: [0] })
   })
   scene.anims.create({
     key: 'littleGuyFallAnim',

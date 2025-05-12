@@ -47,6 +47,7 @@ class Level1Scene extends TilemapScene {
     this.hasKey = false
     this.doorOpen = false
     this.winConditionMet = false
+    this.loseConditionMet = false
     this.spawnPoint = new Phaser.Math.Vector2(50, 950)
 
     // Parse JSON into map
@@ -86,8 +87,6 @@ class Level1Scene extends TilemapScene {
       }
     })
 
-    console.log(this.keys.children)
-    // console.log(this.key)
     // Scale our background
     background.setScale(
       this.mapData.widthInPixels / background.width,
@@ -115,7 +114,16 @@ class Level1Scene extends TilemapScene {
   }
 
   spikeHit () {
-    this.littleGuy.reset(this.spawnPoint.x, this.spawnPoint.y)
+    this.littleGuy.reset(this.spawnPoint.x, this.spawnPoint.y - 15)
+    this.littleGuy.livesLeft -= 1
+    if (this.littleGuy.livesLeft <= 0) {
+      this.loseConditionMet = true
+      if (this.loseConditionMet) {
+        this.scene.start('LoseScreen')
+        this.music.stop()
+      }
+    }
+    console.log(this.littleGuy.livesLeft)
   }
 
   doorHit () {
@@ -134,7 +142,7 @@ class Level1Scene extends TilemapScene {
 
   keyHit () {
     this.hasKey = true
-    console.log('key hit')
+    // console.log('key hit')
     // this.mapData.replaceByIndex(63, 62)
     this.keys.children.entries[0].setFrame(62)
   }

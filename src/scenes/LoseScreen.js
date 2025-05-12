@@ -1,7 +1,7 @@
 import Phaser from 'phaser'
 import CONFIG from '../config.js'
 
-class WinScreen extends Phaser.Scene {
+class LoseScreen extends Phaser.Scene {
   init () {
     this.loadingText = this.add.text(
       CONFIG.DEFAULT_WIDTH / 2,
@@ -25,33 +25,37 @@ class WinScreen extends Phaser.Scene {
     this.loadingText.destroy()
 
     // Add background image
-    const winScreen = this.add.image(CONFIG.DEFAULT_WIDTH / 2, CONFIG.DEFAULT_HEIGHT / 2, 'background')
-    winScreen.setScale(
-      CONFIG.DEFAULT_WIDTH / winScreen.width,
-      CONFIG.DEFAULT_HEIGHT / winScreen.height
-    )
-    this.winText = this.add.text(
+    // const winScreen = this.add.image(CONFIG.DEFAULT_WIDTH / 2, CONFIG.DEFAULT_HEIGHT / 2, 'background')
+    // winScreen.setScale(
+    //   CONFIG.DEFAULT_WIDTH / winScreen.width,
+    //   CONFIG.DEFAULT_HEIGHT / winScreen.height
+    // )
+    this.loseText = this.add.text(
       CONFIG.DEFAULT_WIDTH / 2,
       CONFIG.DEFAULT_HEIGHT / 2,
-      'You Win!', { font: '32pt Arial', color: '#000000', align: 'center' }
+      'You Lose', { font: '32pt Arial', color: '#FFFFFF', align: 'center' }
     )
-    this.winText.setOrigin(0.5, 0.5)
+    this.loseText.setOrigin(0.5, 0.5)
 
     this.input.keyboard.on('keyup', this.keyReleased, this)
   }
 
   keyReleased () {
-    if (WinScreen.canContinue) {
+    if (LoseScreen.canContinue) {
       // console.log('Key released')
       this.scene.start('MainMenu')
-      WinScreen.canContinue = false
+      LoseScreen.canContinue = false
       // this.music.stop()
     }
   }
 
   onTimerEnd () {
-    WinScreen.canContinue = true
+    console.log(LoseScreen.canContinue)
+    // console.log('onTimerEnd')
+    LoseScreen.canContinue = true
+    console.log(LoseScreen.canContinue)
+    // console.log(this)
   }
 }
 
-export default WinScreen
+export default LoseScreen

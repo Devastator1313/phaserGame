@@ -7,6 +7,7 @@ import MainMenu from './scenes/MainMenu.js'
 import Level1 from './scenes/Level1.js'
 import Level1_1 from './scenes/Level1-1.js'
 import WinScreen from './scenes/WinScreen.js'
+import LoseScreen from './scenes/LoseScreen.js'
 import HUD from './scenes/HUD.js'
 
 const config = {
@@ -42,5 +43,6 @@ game.scene.add('MainMenu', MainMenu)
 game.scene.add('Level1', Level1)
 game.scene.add('Level1-1', Level1_1)
 game.scene.add('WinScreen', WinScreen)
+game.scene.add('LoseScreen', LoseScreen)
 game.scene.add('HUDScene', HUD)
 game.scene.start('MainMenu')
