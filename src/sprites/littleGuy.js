@@ -57,15 +57,11 @@ class LittleGuySprite extends Phaser.Physics.Arcade.Sprite {
         this.anims.play('littleGuyFallAnim', true)
       }
     }
-    if (this.facing === 'left') {
-      this.setFlipX(true)
-    } else {
-      this.setFlipX(false)
-    }
-    console.log(this.state)
+    this.setFlipX(this.facing === 'left')
+    // console.log(this.state)
   }
 
-  move (x, y) {
+  move (x) {
     if (x < 0) {
       this.facing = 'left'
     } else if (x > 0) {
@@ -119,7 +115,7 @@ LittleGuySprite.animInitialized = false
 LittleGuySprite.setupAnim = (scene) => {
   scene.anims.create({
     key: 'littleGuyJumpAnim',
-    frameRate: 10,
+    frameRate: 24,
     repeat: 0,
     frames: scene.anims.generateFrameNumbers('littleGuy', { start: 0, end: 5 })
   })

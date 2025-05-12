@@ -17,6 +17,10 @@ class MainMenu extends Phaser.Scene {
   }
 
   create () {
+    this.canContinue = false
+    this.timer = this.time.addEvent({ args: [this.canContinue], callback: this.onTimerEnd, delay: 2000 })
+    // this.timedEvent = this.time.delayedCall(3000, this.onEvent, [], this);
+
     // Remove loading text
     this.loadingText.destroy()
 
@@ -32,6 +36,20 @@ class MainMenu extends Phaser.Scene {
       'You Win!', { font: '32pt Arial', color: '#000000', align: 'center' }
     )
     this.winText.setOrigin(0.5, 0.5)
+
+    if (this.canContinue === true) {
+      this.input.keyboard.on('keyup', this.keyReleased, this)
+    }
+  }
+
+  keyReleased () {
+    console.log('Key released')
+    this.scene.start('MainMenu')
+    // this.music.stop()
+  }
+
+  onTimerEnd (canContinue) {
+    canContinue = true
   }
 }
 

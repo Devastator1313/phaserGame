@@ -1,5 +1,6 @@
 import Phaser from 'phaser'
 import CONFIG from '../config.js'
+import Button from '../sprites/Button.js'
 
 // import LittleGuy from '../sprites/littleGuy.js'
 
@@ -14,9 +15,6 @@ class MainMenu extends Phaser.Scene {
   }
 
   preload () {
-    // Load the image assets needed for THIS scene
-    this.load.image('StartScreen', 'assets/StartScreen.png')
-
     // Load the image assets needed for 'Level1'
     this.load.image('sky', 'assets/skies/space3.png')
     this.load.image('logo', 'assets/sprites/phaser3-logo.png')
@@ -25,52 +23,36 @@ class MainMenu extends Phaser.Scene {
     this.load.spritesheet('littleGuy', 'assets/sprites/littleGuyJump.png',
       { frameWidth: 16, frameHeight: 16 })
 
-    // Pre-load the entire audio sprite
-    // this.load.audioSprite('gameAudio', 'assets/audio/gameAudioSprite.json', [
-    //   'assets/audio/gameAudioSprite.ogg',
-    //   'assets/audio/gameAudioSprite.m4a',
-    //   'assets/audio/gameAudioSprite.mp3',
-    //   'assets/audio/gameAudioSprite.ac3'
-    // ])
+    this.load.spritesheet('startButton', 'assets/sprites/startButton.png',
+      { frameWidth: 32, frameHeight: 16 }
+    )
 
-    // // DEBUG: Fake loading lots of data
-    // for (let i = 0; i < 300; i++) {
-    //   this.load.image('sky' + i, 'assets/skies/space3.png')
-    // }
+    // Pre-load the entire audio sprite
+    this.load.audioSprite('gameAudio', 'assets/audio/gameAudioSprite.json', [
+      'assets/audio/gameAudioSprite.ogg',
+      'assets/audio/gameAudioSprite.m4a',
+      'assets/audio/gameAudioSprite.mp3',
+      'assets/audio/gameAudioSprite.ac3'
+    ])
   }
 
   create () {
     // Remove loading text
     this.loadingText.destroy()
 
-    // Add background image
-    const startScreen = this.add.image(CONFIG.DEFAULT_WIDTH / 2, CONFIG.DEFAULT_HEIGHT / 2, 'StartScreen')
-    startScreen.setScale(
-      CONFIG.DEFAULT_WIDTH / startScreen.width,
-      CONFIG.DEFAULT_HEIGHT / startScreen.height
-    )
-
-    // Add a callback when a key is released
-    this.input.keyboard.on('keyup', this.keyReleased, this)
-
     // Load and play background music
-    // this.music = this.sound.addAudioSprite('gameAudio')
-    // this.music.play('freeVertexStudioTrack1')
+    this.music = this.sound.addAudioSprite('gameAudio')
+    this.music.play('BGMTrack1')
 
-    // Add some sprites
-    // this.littleGuy = new LittleGuy(this, 300, 300)
-    // this.littleGuy.setScale(10, 10)
+    // Create start button
+    this.startButton = new Button(this, CONFIG.DEFAULT_WIDTH / 2, CONFIG.DEFAULT_HEIGHT / 2, 'startButton', 0, 1)
 
-    // Start the animation
-    // this.littleGuy.anims.play('littleGuyJumpAnim')
-
-    // this.cursors = this.input.keyboard.createCursorKeys()
-  }
-
-  keyReleased () {
-    console.log('Key released')
-    this.scene.start('Level1-1')
-    // this.music.stop()
+    // Not quite sure why you have to do this.scene.scene instead of this.scene here
+    this.startButton.onClicked = function (scene = this.scene.scene) {
+      scene.start('Level1')
+      scene.scene.music.stop()
+    }
+    this.startButton.setScale(5)
   }
 }
 
