@@ -42,7 +42,6 @@ class LoseScreen extends Phaser.Scene {
 
   keyReleased () {
     if (LoseScreen.canContinue) {
-      // console.log('Key released')
       this.scene.start('MainMenu')
       LoseScreen.canContinue = false
       // this.music.stop()
@@ -50,11 +49,7 @@ class LoseScreen extends Phaser.Scene {
   }
 
   onTimerEnd () {
-    console.log(LoseScreen.canContinue)
-    // console.log('onTimerEnd')
     LoseScreen.canContinue = true
-    console.log(LoseScreen.canContinue)
-    // console.log(this)
   }
 }
 

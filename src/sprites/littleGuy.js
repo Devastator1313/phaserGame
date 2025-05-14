@@ -2,14 +2,28 @@ import Phaser from 'phaser'
 import CONFIG from '../config.js'
 
 class LittleGuySprite extends Phaser.Physics.Arcade.Sprite {
-  constructor (scene, x, y, facing = 'right', state = 'idle', grounded = false, moving = false, jumpAnimPlaying = false) {
+  constructor (scene, x, y, facing = 'right', state = 'idle', grounded = false, moving = false,
+    jumpAnimPlaying = false, livesLeft = 3, dashCooldown = 1.5, canDash = true, dashing = false, dashDuration = 0.25,
+    invincible = false, invincibilityDurationOnDeath = 0.1) {
     super(scene, x, y, 'littleGuy', 1)
     this.facing = facing
+    this.defaultFacingValue = facing
     this.state = state
     this.grounded = grounded
     this.moving = moving
     this.jumpAnimPlaying = jumpAnimPlaying
-    this.livesLeft = 3
+    this.livesLeft = livesLeft
+    // Cooldown on the player's dash, in seconds
+    this.dashCooldown = dashCooldown
+    this.canDash = canDash
+    this.dashing = dashing
+    // How long the dash lasts, in seconds
+    this.dashDuration = dashDuration
+    this.cursors = scene.input.keyboard.createCursorKeys()
+    this.scene = scene
+    this.invincible = invincible
+    // Time player is invincible after they die, in seconds
+    this.invincibilityDurationOnDeath = invincibilityDurationOnDeath
 
     if (!LittleGuySprite.animInitialized) {
       LittleGuySprite.setupAnim(scene)
@@ -36,6 +50,37 @@ class LittleGuySprite extends Phaser.Physics.Arcade.Sprite {
     this.sfx = scene.sound.addAudioSprite('gameAudio')
   }
 
+  update (time, delta) {
+    const direction = { x: 0 }
+    if (this.cursors.right.isDown) {
+      direction.x += 1
+    }
+    if (this.cursors.left.isDown) {
+      direction.x -= 1
+    }
+
+    if (!this.dashing) {
+      this.move(direction.x)
+    } else {
+      let velMultiplier
+      if (this.facing === 'left') {
+        velMultiplier = -1
+      } else {
+        velMultiplier = 1
+      }
+      this.setVelocityX(velMultiplier * CONFIG.DASH_FORCE)
+    }
+    if (this.cursors.space.isDown) {
+      this.jump()
+    }
+    if (Phaser.Input.Keyboard.JustDown(this.cursors.shift)) {
+      this.dash()
+    }
+
+    this.resolveState()
+    this.anims.update()
+  }
+
   resolveState () {
     if (this.body.onFloor()) {
       this.grounded = true
@@ -59,7 +104,9 @@ class LittleGuySprite extends Phaser.Physics.Arcade.Sprite {
       }
     }
     this.setFlipX(this.facing === 'left')
+
     // console.log(this.state)
+    // console.log(this.anims.currentAnim)
   }
 
   move (x) {
@@ -92,11 +139,42 @@ class LittleGuySprite extends Phaser.Physics.Arcade.Sprite {
     }
   }
 
+  dash () {
+    if (this.canDash) {
+      // this.setVelocityX((this.body.velocity.x + CONFIG.DASH_FORCE))
+      this.dashCooldownTimer = this.scene.time.addEvent({ callback: this.onDashCooldownEnd, delay: this.dashCooldown * 1000, callbackScope: this })
+      this.canDash = false
+      this.dashTimer = this.scene.time.addEvent({ callback: this.onDashEnd, delay: this.dashDuration * 1000, callbackScope: this })
+      this.dashing = true
+    }
+  }
+
+  onDashCooldownEnd () {
+    this.canDash = true
+  }
+
+  onDashEnd () {
+    this.dashing = false
+  }
+
+  setInvincibility (value) {
+    this.invincible = value
+  }
+
   reset (x, y) {
+    this.setInvincibility(true)
+    this.invincibilityTimer = this.scene.time.addEvent({
+      arguments: false,
+      callback: this.setInvincibility,
+      delay: this.invincibilityDurationOnDeath * 1000,
+      callbackScope: this
+    })
+    this.facing = this.defaultFacingValues
     // Move player and stop all motion
     this.setVelocity(0, 0)
     this.setPosition(x, y)
     this.sfx.play('deathSound', { volume: 0.1 })
+    this.dashing = false
 
     // Setup blink tween
     this.setAlpha(0)

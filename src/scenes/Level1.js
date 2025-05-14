@@ -98,6 +98,8 @@ class Level1Scene extends TilemapScene {
     this.littleGuy.setScale(5, 5)
     this.cameras.main.startFollow(this.littleGuy, false, 0.1)
 
+    this.physics.world.TILE_BIAS = 64
+
     // Turn on layer collisions
     this.physics.add.collider(this.littleGuy, this.platformLayer)
     this.physics.add.collider(this.littleGuy, this.blockLayer)
@@ -111,19 +113,25 @@ class Level1Scene extends TilemapScene {
     // Load and play background music
     this.music = this.sound.addAudioSprite('gameAudio')
     this.music.play('Stage1', { volume: 0.05 })
+
+    // Start the overlaid HUD scene
+    this.scene.run('HUDScene', this.littleGuy)
   }
 
   spikeHit () {
-    this.littleGuy.reset(this.spawnPoint.x, this.spawnPoint.y - 15)
-    this.littleGuy.livesLeft -= 1
-    if (this.littleGuy.livesLeft <= 0) {
-      this.loseConditionMet = true
-      if (this.loseConditionMet) {
-        this.scene.start('LoseScreen')
-        this.music.stop()
+    if (!this.littleGuy.invincible) {
+      this.littleGuy.reset(this.spawnPoint.x, this.spawnPoint.y - 15)
+      this.littleGuy.livesLeft -= 1
+      this.events.emit('playerHealthChanged', this.littleGuy.livesLeft)
+      if (this.littleGuy.livesLeft <= 0) {
+        this.loseConditionMet = true
+        if (this.loseConditionMet) {
+          this.scene.start('LoseScreen')
+          this.scene.stop('HUDScene')
+          this.music.stop()
+        }
       }
     }
-    console.log(this.littleGuy.livesLeft)
   }
 
   doorHit () {
@@ -135,7 +143,7 @@ class Level1Scene extends TilemapScene {
     }
     if (this.winConditionMet) {
       this.scene.start('WinScreen')
-      // this.scene.stop('HUDScene')
+      this.scene.stop('HUDScene')
       this.music.stop()
     }
   }
@@ -156,12 +164,26 @@ class Level1Scene extends TilemapScene {
       direction.x -= 1
     }
 
-    this.littleGuy.move(direction.x)
+    if (!this.littleGuy.dashing) {
+      this.littleGuy.move(direction.x)
+    } else {
+      let velMultiplier
+      if (this.littleGuy.facing === 'left') {
+        velMultiplier = -1
+      } else {
+        velMultiplier = 1
+      }
+      this.littleGuy.setVelocityX(velMultiplier * CONFIG.DASH_FORCE)
+    }
     if (this.cursors.space.isDown) {
       this.littleGuy.jump()
     }
+    if (Phaser.Input.Keyboard.JustDown(this.cursors.shift)) {
+      this.littleGuy.dash()
+    }
 
     this.littleGuy.resolveState()
+    // this.anims.update()
   }
 }
 
